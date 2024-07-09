@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UnlockScreen extends JPanel {
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
 
     public UnlockScreen(MainFrame mainFrame) {
         this.mainFrame = mainFrame;

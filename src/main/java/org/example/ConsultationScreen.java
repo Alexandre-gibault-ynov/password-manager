@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ConsultationScreen extends JPanel {
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
     private JList<String> credentialsList;
     private DefaultListModel<String> listModel;
     private JTextField identifierField;
