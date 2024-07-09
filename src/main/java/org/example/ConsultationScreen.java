@@ -28,6 +28,26 @@ public class ConsultationScreen extends JPanel {
         JButton editButton = new JButton("✎");
         JButton deleteButton = new JButton("🗑");
 
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.setContentPane(new EditScreen(mainFrame));
+                mainFrame.validate();
+            }
+        });
+
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Load selected credential for editing
+                // For simplicity, we assume only one item for now
+                if (!credentialsList.isSelectionEmpty()) {
+                    mainFrame.setContentPane(new EditScreen(mainFrame));
+                    mainFrame.validate();
+                }
+            }
+        });
+
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
