@@ -2,6 +2,8 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UnlockScreen extends JPanel {
     private MainFrame mainFrame;
@@ -15,11 +17,16 @@ public class UnlockScreen extends JPanel {
         JPasswordField passwordField = new JPasswordField(20);
         JButton unlockButton = new JButton("Unlock");
 
-        unlockButton.addActionListener(e -> {
-            if (passwordField.getPassword().equals("admin")) {
-
-            } else {
-                JOptionPane.showMessageDialog(mainFrame, "Invalid password", "Error", JOptionPane.ERROR_MESSAGE);
+        unlockButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Validate master password (for demonstration, we assume it's "admin")
+                if (new String(passwordField.getPassword()).equals("admin")) {
+                    mainFrame.setContentPane(new ConsultationScreen(mainFrame));
+                    mainFrame.validate();
+                } else {
+                    JOptionPane.showMessageDialog(mainFrame, "Invalid Password", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
