@@ -10,7 +10,7 @@ public class UnlockScreen extends JPanel {
 
     public UnlockScreen(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
-        setLayout(new GridLayout());
+        setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
         JLabel logoPanel = new JLabel("Password Manager Logo");
