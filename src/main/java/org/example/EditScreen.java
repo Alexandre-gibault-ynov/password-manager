@@ -1,7 +1,12 @@
 package org.example;
 
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.PasswordGenerator;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class EditScreen extends JPanel {
     private final MainFrame mainFrame;
@@ -75,11 +80,12 @@ public class EditScreen extends JPanel {
     }
 
     private String generatePassword(int length) {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder password = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            password.append(chars.charAt((int) (Math.random() * chars.length())));
-        }
-        return password.toString();
+        PasswordGenerator generator = new PasswordGenerator();
+        CharacterRule lowerCaseRule = new CharacterRule(EnglishCharacterData.LowerCase, 1);
+        CharacterRule upperCaseRule = new CharacterRule(EnglishCharacterData.UpperCase, 1);
+        CharacterRule digitRule = new CharacterRule(EnglishCharacterData.Digit, 1);
+        CharacterRule specialCharRule = new CharacterRule(EnglishCharacterData.Special, 1);
+
+        return generator.generatePassword(length, Arrays.asList(lowerCaseRule, upperCaseRule, digitRule, specialCharRule));
     }
 }
