@@ -33,10 +33,9 @@ public class EditScreen extends JPanel {
         JLabel authServiceLabel = new JLabel("Authentication Service:");
         JLabel passwordGeneratorLabel = new JLabel("Password Generator:");
 
-        JSlider passwordGeneratorSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 14);
+        JSlider passwordGeneratorSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 14);
         passwordGeneratorSlider.setMajorTickSpacing(10);
         passwordGeneratorSlider.setMinorTickSpacing(1);
-        passwordGeneratorSlider.setPaintLabels(true);
 
         passwordGeneratorSlider.addChangeListener(e -> {
             int length = passwordGeneratorSlider.getValue();
@@ -96,6 +95,6 @@ public class EditScreen extends JPanel {
         CharacterRule digitRule = new CharacterRule(EnglishCharacterData.Digit, 1);
         CharacterRule specialCharRule = new CharacterRule(EnglishCharacterData.Special, 1);
 
-        return generator.generatePassword(length, Arrays.asList(lowerCaseRule, upperCaseRule, digitRule, specialCharRule));
+        return length >= 4 ? generator.generatePassword(length, Arrays.asList(lowerCaseRule, upperCaseRule, digitRule, specialCharRule)) : generator.generatePassword(length);
     }
 }
