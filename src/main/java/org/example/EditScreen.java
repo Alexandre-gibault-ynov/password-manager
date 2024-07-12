@@ -22,7 +22,8 @@ public class EditScreen extends JPanel {
         identifierField = new JTextField(20);
         passwordField = new JTextField(20);
         authServiceField = new JTextField(20);
-        passwordGeneratorOutputField = new JTextField(20);
+        passwordGeneratorOutputField = new JTextField(100);
+        passwordGeneratorOutputField.setEditable(false);
 
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
@@ -40,6 +41,12 @@ public class EditScreen extends JPanel {
         passwordGeneratorSlider.addChangeListener(e -> {
             int length = passwordGeneratorSlider.getValue();
             passwordGeneratorOutputField.setText(generatePassword(length));
+        });
+
+        JButton generatePasswordButton = new JButton("Generate");
+        generatePasswordButton.addActionListener(e -> {
+            String generatedPassword = generatePassword(passwordGeneratorSlider.getValue());
+            passwordGeneratorOutputField.setText(generatedPassword);
         });
 
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
@@ -65,6 +72,9 @@ public class EditScreen extends JPanel {
         gridBagConstraints.gridy++;
         rightPanel.add(passwordGeneratorSlider, gridBagConstraints);
         gridBagConstraints.gridy++;
+        rightPanel.add(passwordGeneratorOutputField, gridBagConstraints);
+        gridBagConstraints.gridy++;
+        rightPanel.add(generatePasswordButton, gridBagConstraints);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton saveButton = new JButton("Save");
