@@ -2,97 +2,75 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ConsultationScreen extends JPanel {
-    private final MainFrame mainFrame;
-    private JList<String> credentialsList;
-    private DefaultListModel<String> listModel;
-    private JTextField identifierField;
-    private JTextField passwordField;
-    private JTextField authServiceField;
+    private final JList<String> credentialsList;
+    private final DefaultListModel<String> listModel;
 
     public ConsultationScreen(MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
         setLayout(new BorderLayout());
+
+        JLabel logo = new JLabel("Password Manager Logo", SwingConstants.CENTER);
+        add(logo, BorderLayout.NORTH);
 
         listModel = new DefaultListModel<>();
         credentialsList = new JList<>(listModel);
 
-        identifierField = new JTextField(20);
-        passwordField = new JTextField(20);
-        authServiceField = new JTextField(20);
+        JScrollPane credentialsListPane = new JScrollPane(credentialsList);
+        add(credentialsListPane, BorderLayout.WEST);
+
+        JPanel detailsPanel = new JPanel();
+        detailsPanel.setLayout(new BorderLayout());
+
+        JPanel credentialsDetailsPanel = new JPanel();
+        credentialsDetailsPanel.setLayout(new BoxLayout(credentialsDetailsPanel, BoxLayout.Y_AXIS));
+
+        LabeledTextField identifierField = new LabeledTextField("Identifier",20);
+        LabeledTextField passwordField = new LabeledTextField("Password",20);
+        LabeledTextField authServiceField = new LabeledTextField("Auth service",20);
+
+        identifierField.setTextFieldEditable(false);
+        passwordField.setTextFieldEditable(false);
+        authServiceField.setTextFieldEditable(false);
+
+        credentialsDetailsPanel.add(Box.createVerticalGlue());
+        credentialsDetailsPanel.add(identifierField);
+        credentialsDetailsPanel.add(passwordField);
+        credentialsDetailsPanel.add(authServiceField);
+        credentialsDetailsPanel.add(Box.createVerticalGlue());
+
+        detailsPanel.add(credentialsDetailsPanel, BorderLayout.CENTER);
 
         JButton addButton = new JButton("+");
         JButton editButton = new JButton("✎");
         JButton deleteButton = new JButton("🗑");
 
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        addButton.addActionListener(e -> {
+            mainFrame.setContentPane(new EditScreen(mainFrame));
+            mainFrame.validate();
+        });
+
+        editButton.addActionListener(e -> {
+            // Load selected credential for editing
+            // For simplicity, we assume only one item for now
+            if (!credentialsList.isSelectionEmpty()) {
                 mainFrame.setContentPane(new EditScreen(mainFrame));
                 mainFrame.validate();
             }
         });
 
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Load selected credential for editing
-                // For simplicity, we assume only one item for now
-                if (!credentialsList.isSelectionEmpty()) {
-                    mainFrame.setContentPane(new EditScreen(mainFrame));
-                    mainFrame.validate();
-                }
+        deleteButton.addActionListener(e -> {
+            if (!credentialsList.isSelectionEmpty()) {
+                listModel.removeElement(credentialsList.getSelectedIndex());
             }
         });
 
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!credentialsList.isSelectionEmpty()) {
-                    listModel.removeElement(credentialsList.getSelectedIndex());
-                }
-            }
-        });
-
-        JPanel leftPanel = new JPanel(new BorderLayout());
-        leftPanel.add(new JScrollPane(credentialsList), BorderLayout.CENTER);
-
-        JPanel rightPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-
-        JLabel identifierLabel = new JLabel("Identifier:");
-        JLabel passwordLabel = new JLabel("Password:");
-        JLabel authServiceLabel = new JLabel("Auth Service:");
-
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = GridBagConstraints.EAST;
-        rightPanel.add(identifierLabel, gridBagConstraints);
-        gridBagConstraints.gridy++;
-        rightPanel.add(passwordLabel, gridBagConstraints);
-        gridBagConstraints.gridy++;
-        rightPanel.add(authServiceLabel, gridBagConstraints);
-
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = GridBagConstraints.WEST;
-        rightPanel.add(identifierField, gridBagConstraints);
-        gridBagConstraints.gridy++;
-        rightPanel.add(passwordField, gridBagConstraints);
-        gridBagConstraints.gridy++;
-        rightPanel.add(authServiceField, gridBagConstraints);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
+        detailsPanel.add(buttonPanel, BorderLayout.NORTH);
 
-        add(leftPanel, BorderLayout.WEST);
-        add(rightPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(detailsPanel, BorderLayout.CENTER);
     }
 }

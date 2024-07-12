@@ -25,11 +25,13 @@ public class LabeledTextField extends JPanel {
         JLabel label = new JLabel(labelText);
         textField = new JTextField(textFieldLength);
 
+        gridBagConstraints.insets = new Insets(5, 0, 5, 0);
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         add(label, gridBagConstraints);
         gridBagConstraints.gridy++;
         add(textField, gridBagConstraints);
+        setMaximumSize(this.getPreferredSize());
     }
 
     /**
