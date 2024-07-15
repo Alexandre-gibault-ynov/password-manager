@@ -25,13 +25,9 @@ public class ConsultationScreen extends JPanel {
         JPanel credentialsDetailsPanel = new JPanel();
         credentialsDetailsPanel.setLayout(new BoxLayout(credentialsDetailsPanel, BoxLayout.Y_AXIS));
 
-        LabeledTextField identifierField = new LabeledTextField("Identifier",20);
-        LabeledTextField passwordField = new LabeledTextField("Password",20);
-        LabeledTextField authServiceField = new LabeledTextField("Auth service",20);
-
-        identifierField.setTextFieldEditable(false);
-        passwordField.setTextFieldEditable(false);
-        authServiceField.setTextFieldEditable(false);
+        LabeledTextField identifierField = new LabeledTextField("Identifier",20, false);
+        LabeledTextField passwordField = new LabeledTextField("Password",20, false);
+        LabeledTextField authServiceField = new LabeledTextField("Auth service",20, false);
 
         credentialsDetailsPanel.add(Box.createVerticalGlue());
         credentialsDetailsPanel.add(identifierField);

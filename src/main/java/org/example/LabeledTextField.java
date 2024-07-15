@@ -36,6 +36,17 @@ public class LabeledTextField extends JPanel {
     }
 
     /**
+     * Constructor that set the labelled text field editable or not
+     *
+     * @param labelText The label of the text field
+     * @param textFieldLength The length of the text field
+     * @param editable The editable text field option
+     */
+    public LabeledTextField(String labelText, int textFieldLength, boolean editable) {
+        this(labelText, textFieldLength);
+        textField.setEditable(editable);
+    }
+    /**
      * Get the text contained by the labeled text field
      *
      * @return The text of the labeled text field
