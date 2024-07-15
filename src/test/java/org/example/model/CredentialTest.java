@@ -32,7 +32,7 @@ class CredentialTest {
     void setIdentifier() {
         String identifier = "test01";
         Credential credential = new Credential("test", "test", "test", "test");
-        credential.setName("test01");
+        credential.setIdentifier("test01");
         assertThat(credential.getIdentifier(), equalTo(identifier));
     }
 
