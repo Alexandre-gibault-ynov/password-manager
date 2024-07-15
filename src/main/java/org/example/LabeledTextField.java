@@ -26,6 +26,7 @@ public class LabeledTextField extends JPanel {
         textField = new JTextField(textFieldLength);
 
         gridBagConstraints.insets = new Insets(5, 0, 5, 0);
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         add(label, gridBagConstraints);
