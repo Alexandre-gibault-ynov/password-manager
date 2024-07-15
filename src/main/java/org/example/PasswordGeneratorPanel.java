@@ -10,9 +10,10 @@ import java.util.Arrays;
 
 public class PasswordGeneratorPanel extends JPanel {
     public PasswordGeneratorPanel() {
+        setLayout(new GridBagLayout());
+
         JTextField passwordGeneratorOutputField = new JTextField(100);
         passwordGeneratorOutputField.setEditable(false);
-        JPanel passwordGeneratorPanel = new JPanel(new GridBagLayout());
         JLabel passwordGeneratorLabel = new JLabel("Password Generator");
 
         JSlider passwordGeneratorSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 14);
@@ -38,21 +39,22 @@ public class PasswordGeneratorPanel extends JPanel {
         passwordGeneratorPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
         passwordGeneratorPanelConstraints.gridx = 0;
         passwordGeneratorPanelConstraints.gridy = 0;
-        passwordGeneratorPanel.add(passwordGeneratorLabel, passwordGeneratorPanelConstraints);
+        add(passwordGeneratorLabel, passwordGeneratorPanelConstraints);
 
         passwordGeneratorPanelConstraints.gridy++;
-        passwordGeneratorPanel.add(passwordGeneratorSlider, passwordGeneratorPanelConstraints);
+        add(passwordGeneratorSlider, passwordGeneratorPanelConstraints);
 
         passwordGeneratorPanelConstraints.gridx++;
-        passwordGeneratorPanel.add(charactersCountLabel, passwordGeneratorPanelConstraints);
+        add(charactersCountLabel, passwordGeneratorPanelConstraints);
 
         passwordGeneratorPanelConstraints.gridx++;
-        passwordGeneratorPanel.add(generatePasswordButton, passwordGeneratorPanelConstraints);
+        add(generatePasswordButton, passwordGeneratorPanelConstraints);
 
         passwordGeneratorPanelConstraints.gridy++;
         passwordGeneratorPanelConstraints.gridx = 0;
         passwordGeneratorPanelConstraints.gridwidth = 4;
-        passwordGeneratorPanel.add(passwordGeneratorOutputField, passwordGeneratorPanelConstraints);
+        add(passwordGeneratorOutputField, passwordGeneratorPanelConstraints);
+        setMaximumSize(this.getPreferredSize());
     }
 
     private String generatePassword(int length) {
