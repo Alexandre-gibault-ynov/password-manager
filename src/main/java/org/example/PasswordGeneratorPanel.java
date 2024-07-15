@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
+/**
+ * Password generator panel helps the user to generate a password.
+ */
 public class PasswordGeneratorPanel extends JPanel {
     public PasswordGeneratorPanel() {
         setLayout(new GridBagLayout());
@@ -57,6 +60,14 @@ public class PasswordGeneratorPanel extends JPanel {
         setMaximumSize(this.getPreferredSize());
     }
 
+    /**
+     * Generate a password with the given length. If the length is greater or equal to 4
+     * the generator creates a password with certain rules. Otherwise, it generates a simple
+     * password with the given length.
+     *
+     * @param length The number of characters for the password
+     * @return Random password
+     */
     private String generatePassword(int length) {
         PasswordGenerator generator = new PasswordGenerator();
         CharacterRule lowerCaseRule = new CharacterRule(EnglishCharacterData.LowerCase, 1);
