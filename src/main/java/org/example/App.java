@@ -1,6 +1,6 @@
 package org.example;
 
-import javax.swing.*;
+import org.example.view.MainFrame;
 
 public class App
 {
