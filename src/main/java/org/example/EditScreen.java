@@ -8,7 +8,6 @@ public class EditScreen extends JPanel {
     private LabeledTextField identifierField;
     private LabeledTextField passwordField;
     private LabeledTextField authServiceField;
-    private JTextField passwordGeneratorOutputField;
     private JList<String> credentialsList;
     private DefaultListModel<String> listModel;
 
