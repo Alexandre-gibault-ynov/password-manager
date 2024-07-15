@@ -17,16 +17,13 @@ public class UnlockScreen extends JPanel {
         JPasswordField passwordField = new JPasswordField(20);
         JButton unlockButton = new JButton("Unlock");
 
-        unlockButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Validate master password (for demonstration, we assume it's "admin")
-                if (new String(passwordField.getPassword()).equals("admin")) {
-                    mainFrame.setContentPane(new ConsultationScreen(mainFrame));
-                    mainFrame.validate();
-                } else {
-                    JOptionPane.showMessageDialog(mainFrame, "Invalid Password", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+        unlockButton.addActionListener(e -> {
+            // Validate master password (for demonstration, we assume it's "admin")
+            if (new String(passwordField.getPassword()).equals("admin")) {
+                mainFrame.setContentPane(new ConsultationScreen(mainFrame));
+                mainFrame.validate();
+            } else {
+                JOptionPane.showMessageDialog(mainFrame, "Invalid Password", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
