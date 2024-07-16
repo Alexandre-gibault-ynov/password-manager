@@ -12,7 +12,12 @@ public class EditScreen extends JPanel {
     private final LabeledTextField passwordField;
     private final LabeledTextField authServiceField;
 
-    public EditScreen(MainFrame mainFrame, CredentialController credentialController) {
+    public EditScreen(MainFrame mainFrame, CredentialController credentialController ) {
+        this(mainFrame, credentialController, null);
+    }
+
+    public EditScreen(MainFrame mainFrame, CredentialController credentialController, Credential currentCredential) {
+
         setLayout(new BorderLayout());
 
         // Credentials list at left
@@ -55,7 +60,7 @@ public class EditScreen extends JPanel {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             int reply = JOptionPane.showConfirmDialog(mainFrame, "Are you sure to go back ?", "Back", JOptionPane.OK_CANCEL_OPTION);
             if (reply == JOptionPane.OK_OPTION) {
                 mainFrame.switchPanel(new ConsultationScreen(mainFrame, credentialController));
@@ -65,14 +70,21 @@ public class EditScreen extends JPanel {
         buttonPanel.add(backButton);
 
         JButton saveButton = new JButton("Save");
-        saveButton.addActionListener(e -> {
-            credentialController.saveCredential(
-                    credentialName.getTextFieldText(),
-                    identifierField.getTextFieldText(),
-                    passwordField.getTextFieldText(),
-                    authServiceField.getTextFieldText()
-            );
+        saveButton.addActionListener(_ -> {
+            String name = credentialName.getTextFieldText();
+            String identifier = identifierField.getTextFieldText();
+            String password = passwordField.getTextFieldText();
+            String authService = authServiceField.getTextFieldText();
+
+            if (currentCredential == null) {
+                credentialController.saveCredential(name, identifier, password, authService
+                );
+            } else {
+                int selectedCredentialIndex = credentialsList.getSelectedIndex();
+                credentialController.updateCredential(selectedCredentialIndex, name, identifier, password, authService);
+            }
             JOptionPane.showMessageDialog(mainFrame,"Credential successfully saved");
+            mainFrame.switchPanel(new ConsultationScreen(mainFrame, credentialController));
         });
         buttonPanel.add(saveButton);
 
@@ -81,5 +93,13 @@ public class EditScreen extends JPanel {
         mainPanel.add(buttonPanel, mainPanelConstraints);
 
         add(mainPanel, BorderLayout.CENTER);
+
+        // If editing an existing credential, populate the fields
+        if (currentCredential != null) {
+            credentialName.setTextFieldText(currentCredential.getName());
+            identifierField.setTextFieldText(currentCredential.getIdentifier());
+            passwordField.setTextFieldText(currentCredential.getPassword());
+            authServiceField.setTextFieldText(currentCredential.getAuthService());
+        }
     }
 }

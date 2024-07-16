@@ -62,7 +62,11 @@ public class ConsultationScreen extends JPanel {
 
         editButton.addActionListener(e -> {
             if (!credentialsList.isSelectionEmpty()) {
-                mainFrame.switchPanel(new EditScreen(mainFrame, credentialController));
+                String selectedCredentialName = credentialsList.getSelectedValue();
+                credentialController.getCredentials().stream()
+                        .filter(cred -> cred.getName().equals(selectedCredentialName))
+                        .findFirst()
+                        .ifPresent(selectedCredential -> mainFrame.switchPanel(new EditScreen(mainFrame, credentialController, selectedCredential)));
             }
         });
 
@@ -70,9 +74,9 @@ public class ConsultationScreen extends JPanel {
             if (!credentialsList.isSelectionEmpty()) {
                 int reply = JOptionPane.showConfirmDialog(mainFrame, "Are you sure to delete this credential?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
                 if (reply == JOptionPane.OK_OPTION) {
-                    int selectedIndex = credentialsList.getSelectedIndex();
-                    credentialController.removeCredential(selectedIndex);
-                    listModel.remove(selectedIndex);
+                    int selectedCredentialIndex = credentialsList.getSelectedIndex();
+                    credentialController.removeCredential(selectedCredentialIndex);
+                    listModel.remove(selectedCredentialIndex);
                 }
             }
         });
