@@ -17,11 +17,11 @@ public class UnlockScreen extends JPanel {
 
         unlockButton.addActionListener(_ -> {
             // Validate master password (for demonstration, we assume it's "admin")
-            if (new String(passwordField.getPassword()).equals("admin")) {
-                mainFrame.setContentPane(new ConsultationScreen(mainFrame, credentialController));
-                mainFrame.validate();
+            String inputPassword = new String(passwordField.getPassword());
+            if (credentialController.validateMasterPassword(inputPassword)) {
+                mainFrame.switchPanel(new ConsultationScreen(mainFrame, credentialController));
             } else {
-                JOptionPane.showMessageDialog(mainFrame, "Invalid Password", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainFrame, "Invalid password. Try again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 

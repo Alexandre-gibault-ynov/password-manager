@@ -19,9 +19,11 @@ import java.util.stream.Collectors;
 public class CredentialController {
     private static final String FILE_PATH = "credentials.enc";
     private static final String KEY_PATH = "secret.key";
+    private static final String MASTER_PASSWORD_PATH = "master_password.enc";
     private final MainFrame mainFrame;
     private List<Credential> credentials;
     private SecretKey secretKey;
+    private String masterPassword;
 
     public CredentialController(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -35,6 +37,7 @@ public class CredentialController {
                 CryptoUtils.saveKey(secretKey, KEY_PATH);
             }
             loadCredentials();
+            loadMasterPassword();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,6 +107,38 @@ public class CredentialController {
         }
     }
 
+
+    private void saveMasterPassword() {
+        try {
+            byte[] encryptedPassword = CryptoUtils.encrypt(masterPassword, secretKey);
+            Files.write(Paths.get(MASTER_PASSWORD_PATH), encryptedPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadMasterPassword() {
+        try {
+            if (Files.exists(Paths.get(MASTER_PASSWORD_PATH))) {
+                byte[] encryptedPassword = Files.readAllBytes(Paths.get(MASTER_PASSWORD_PATH));
+                masterPassword = CryptoUtils.decrypt(encryptedPassword, secretKey);
+            } else {
+                masterPassword = "default";  // Default password for first time setup
+                saveMasterPassword();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean validateMasterPassword(String inputPassword) {
+        return masterPassword.equals(inputPassword);
+    }
+
+    public void changeMasterPassword(String newPassword) {
+        masterPassword = newPassword;
+        saveMasterPassword();
+    }
 
     /**
      * Generate a password with the given length. If the length is greater or equal to 4

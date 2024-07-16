@@ -55,6 +55,7 @@ public class ConsultationScreen extends JPanel {
         JButton addButton = new JButton("+");
         JButton editButton = new JButton("✎");
         JButton deleteButton = new JButton("🗑");
+        JButton settingsButton = new JButton("Settings");
 
         addButton.addActionListener(_ -> mainFrame.switchPanel(new EditScreen(mainFrame, credentialController)));
 
@@ -79,10 +80,21 @@ public class ConsultationScreen extends JPanel {
             }
         });
 
+        settingsButton.addActionListener(_ -> {
+            JPasswordField newPasswordField = new JPasswordField(20);
+            int result = JOptionPane.showConfirmDialog(mainFrame, newPasswordField, "Enter new master password", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                String newPassword = new String(newPasswordField.getPassword());
+                credentialController.changeMasterPassword(newPassword);
+                JOptionPane.showMessageDialog(mainFrame, "Master password changed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(settingsButton);
         detailsPanel.add(buttonPanel, BorderLayout.NORTH);
 
         add(detailsPanel, BorderLayout.CENTER);
