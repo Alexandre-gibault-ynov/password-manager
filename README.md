@@ -1,1 +1,1 @@
-Default password is default
+Default password is `default`
