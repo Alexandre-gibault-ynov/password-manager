@@ -1,13 +1,13 @@
 package org.example.view;
 
+import org.example.controller.CredentialController;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class UnlockScreen extends JPanel {
-    private final MainFrame mainFrame;
 
-    public UnlockScreen(MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
+    public UnlockScreen(MainFrame mainFrame, CredentialController credentialController) {
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
@@ -18,7 +18,7 @@ public class UnlockScreen extends JPanel {
         unlockButton.addActionListener(e -> {
             // Validate master password (for demonstration, we assume it's "admin")
             if (new String(passwordField.getPassword()).equals("admin")) {
-                mainFrame.setContentPane(new ConsultationScreen(mainFrame));
+                mainFrame.setContentPane(new ConsultationScreen(mainFrame, credentialController));
                 mainFrame.validate();
             } else {
                 JOptionPane.showMessageDialog(mainFrame, "Invalid Password", "Error", JOptionPane.ERROR_MESSAGE);

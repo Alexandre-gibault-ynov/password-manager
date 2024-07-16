@@ -1,18 +1,15 @@
 package org.example.view;
 
-import org.passay.CharacterRule;
-import org.passay.EnglishCharacterData;
-import org.passay.PasswordGenerator;
+import org.example.controller.CredentialController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 /**
  * Password generator panel helps the user to generate a password.
  */
 public class PasswordGeneratorPanel extends JPanel {
-    public PasswordGeneratorPanel() {
+    public PasswordGeneratorPanel(CredentialController credentialController) {
         setLayout(new GridBagLayout());
 
         JTextField passwordGeneratorOutputField = new JTextField(100);
@@ -26,14 +23,14 @@ public class PasswordGeneratorPanel extends JPanel {
 
         passwordGeneratorSlider.addChangeListener(e -> {
             int length = passwordGeneratorSlider.getValue();
-            charactersCountLabel.setText(passwordGeneratorSlider.getValue() + " Characters");
-            passwordGeneratorOutputField.setText(generatePassword(length));
+            charactersCountLabel.setText(length + " Characters");
+            passwordGeneratorOutputField.setText(credentialController.generatePassword(length));
         });
 
 
         JButton generatePasswordButton = new JButton("Generate");
         generatePasswordButton.addActionListener(e -> {
-            String generatedPassword = generatePassword(passwordGeneratorSlider.getValue());
+            String generatedPassword = credentialController.generatePassword(passwordGeneratorSlider.getValue());
             passwordGeneratorOutputField.setText(generatedPassword);
         });
 
@@ -58,23 +55,5 @@ public class PasswordGeneratorPanel extends JPanel {
         passwordGeneratorPanelConstraints.gridwidth = 4;
         add(passwordGeneratorOutputField, passwordGeneratorPanelConstraints);
         setMaximumSize(this.getPreferredSize());
-    }
-
-    /**
-     * Generate a password with the given length. If the length is greater or equal to 4
-     * the generator creates a password with certain rules. Otherwise, it generates a simple
-     * password with the given length.
-     *
-     * @param length The number of characters for the password
-     * @return Random password
-     */
-    private String generatePassword(int length) {
-        PasswordGenerator generator = new PasswordGenerator();
-        CharacterRule lowerCaseRule = new CharacterRule(EnglishCharacterData.LowerCase, 1);
-        CharacterRule upperCaseRule = new CharacterRule(EnglishCharacterData.UpperCase, 1);
-        CharacterRule digitRule = new CharacterRule(EnglishCharacterData.Digit, 1);
-        CharacterRule specialCharRule = new CharacterRule(EnglishCharacterData.Special, 1);
-
-        return length >= 4 ? generator.generatePassword(length, Arrays.asList(lowerCaseRule, upperCaseRule, digitRule, specialCharRule)) : generator.generatePassword(length);
     }
 }

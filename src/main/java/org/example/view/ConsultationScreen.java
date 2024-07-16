@@ -1,5 +1,8 @@
 package org.example.view;
 
+import org.example.controller.CredentialController;
+import org.example.model.Credential;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,7 +10,7 @@ public class ConsultationScreen extends JPanel {
     private final JList<String> credentialsList;
     private final DefaultListModel<String> listModel;
 
-    public ConsultationScreen(MainFrame mainFrame) {
+    public ConsultationScreen(MainFrame mainFrame, CredentialController credentialController) {
         setLayout(new BorderLayout());
 
         JLabel logo = new JLabel("Password Manager Logo", SwingConstants.CENTER);
@@ -15,8 +18,10 @@ public class ConsultationScreen extends JPanel {
 
         listModel = new DefaultListModel<>();
         credentialsList = new JList<>(listModel);
+        loadCredentials(credentialController);
 
         JScrollPane credentialsListPane = new JScrollPane(credentialsList);
+        credentialsListPane.setMinimumSize(credentialsListPane.getPreferredSize());
         add(credentialsListPane, BorderLayout.WEST);
 
         JPanel detailsPanel = new JPanel();
@@ -42,16 +47,14 @@ public class ConsultationScreen extends JPanel {
         JButton deleteButton = new JButton("🗑");
 
         addButton.addActionListener(e -> {
-            mainFrame.setContentPane(new EditScreen(mainFrame));
-            mainFrame.validate();
+            mainFrame.switchPanel(new EditScreen(mainFrame, credentialController));
         });
 
         editButton.addActionListener(e -> {
             // Load selected credential for editing
             // For simplicity, we assume only one item for now
             if (!credentialsList.isSelectionEmpty()) {
-                mainFrame.setContentPane(new EditScreen(mainFrame));
-                mainFrame.validate();
+                mainFrame.switchPanel(new EditScreen(mainFrame, credentialController));
             }
         });
 
@@ -68,5 +71,12 @@ public class ConsultationScreen extends JPanel {
         detailsPanel.add(buttonPanel, BorderLayout.NORTH);
 
         add(detailsPanel, BorderLayout.CENTER);
+    }
+
+    private void loadCredentials(CredentialController credentialController) {
+        listModel.clear();
+        for (Credential credential : credentialController.getCredentials()) {
+            listModel.addElement(credential.getName());
+        }
     }
 }

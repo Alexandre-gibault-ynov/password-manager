@@ -1,23 +1,27 @@
 package org.example.view;
 
+import org.example.controller.CredentialController;
+import org.example.model.Credential;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class EditScreen extends JPanel {
-    private LabeledTextField credentialName;
-    private LabeledTextField identifierField;
-    private LabeledTextField passwordField;
-    private LabeledTextField authServiceField;
-    private JList<String> credentialsList;
-    private DefaultListModel<String> listModel;
+    private final LabeledTextField credentialName;
+    private final LabeledTextField identifierField;
+    private final LabeledTextField passwordField;
+    private final LabeledTextField authServiceField;
 
-    public EditScreen(MainFrame mainFrame) {
+    public EditScreen(MainFrame mainFrame, CredentialController credentialController) {
         setLayout(new BorderLayout());
 
         // Credentials list at left
-        listModel = new DefaultListModel<>();
-        credentialsList = new JList<>(listModel);
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        JList<String> credentialsList = new JList<>(listModel);
 
+        for (Credential credential : credentialController.getCredentials()) {
+            listModel.addElement(credential.getName());
+        }
         JScrollPane scrollPane = new JScrollPane(credentialsList);
         add(scrollPane, BorderLayout.WEST);
 
@@ -47,15 +51,14 @@ public class EditScreen extends JPanel {
         mainPanelConstraints.gridy++;
         mainPanelConstraints.gridx = 0;
         mainPanelConstraints.gridwidth = 2;
-        mainPanel.add(new PasswordGeneratorPanel(), mainPanelConstraints);
+        mainPanel.add(new PasswordGeneratorPanel(credentialController), mainPanelConstraints);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {
             int reply = JOptionPane.showConfirmDialog(mainFrame, "Are you sure to go back ?", "Back", JOptionPane.OK_CANCEL_OPTION);
             if (reply == JOptionPane.OK_OPTION) {
-                mainFrame.setContentPane(new ConsultationScreen(mainFrame));
-                mainFrame.validate();
+                mainFrame.switchPanel(new ConsultationScreen(mainFrame, credentialController));
             }
 
         });
@@ -63,9 +66,13 @@ public class EditScreen extends JPanel {
 
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
+            credentialController.saveCredential(
+                    credentialName.getTextFieldText(),
+                    identifierField.getTextFieldText(),
+                    passwordField.getTextFieldText(),
+                    authServiceField.getTextFieldText()
+            );
             JOptionPane.showMessageDialog(mainFrame,"Credential successfully saved");
-            mainFrame.setContentPane(new ConsultationScreen(mainFrame));
-            mainFrame.validate();
         });
         buttonPanel.add(saveButton);
 
