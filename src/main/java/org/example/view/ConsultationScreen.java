@@ -56,11 +56,9 @@ public class ConsultationScreen extends JPanel {
         JButton editButton = new JButton("✎");
         JButton deleteButton = new JButton("🗑");
 
-        addButton.addActionListener(e -> {
-            mainFrame.switchPanel(new EditScreen(mainFrame, credentialController));
-        });
+        addButton.addActionListener(_ -> mainFrame.switchPanel(new EditScreen(mainFrame, credentialController)));
 
-        editButton.addActionListener(e -> {
+        editButton.addActionListener(_ -> {
             if (!credentialsList.isSelectionEmpty()) {
                 String selectedCredentialName = credentialsList.getSelectedValue();
                 credentialController.getCredentials().stream()
@@ -70,7 +68,7 @@ public class ConsultationScreen extends JPanel {
             }
         });
 
-        deleteButton.addActionListener(e -> {
+        deleteButton.addActionListener(_ -> {
             if (!credentialsList.isSelectionEmpty()) {
                 int reply = JOptionPane.showConfirmDialog(mainFrame, "Are you sure to delete this credential?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
                 if (reply == JOptionPane.OK_OPTION) {

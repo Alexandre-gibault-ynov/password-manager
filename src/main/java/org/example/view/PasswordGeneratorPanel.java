@@ -21,7 +21,7 @@ public class PasswordGeneratorPanel extends JPanel {
         passwordGeneratorSlider.setMinorTickSpacing(1);
         JLabel charactersCountLabel = new JLabel(passwordGeneratorSlider.getValue() + " Characters");
 
-        passwordGeneratorSlider.addChangeListener(e -> {
+        passwordGeneratorSlider.addChangeListener(_ -> {
             int length = passwordGeneratorSlider.getValue();
             charactersCountLabel.setText(length + " Characters");
             passwordGeneratorOutputField.setText(credentialController.generatePassword(length));
@@ -29,7 +29,7 @@ public class PasswordGeneratorPanel extends JPanel {
 
 
         JButton generatePasswordButton = new JButton("Generate");
-        generatePasswordButton.addActionListener(e -> {
+        generatePasswordButton.addActionListener(_ -> {
             String generatedPassword = credentialController.generatePassword(passwordGeneratorSlider.getValue());
             passwordGeneratorOutputField.setText(generatedPassword);
         });
