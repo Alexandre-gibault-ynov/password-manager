@@ -5,8 +5,12 @@ import org.example.model.Credential;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 public class ConsultationScreen extends JPanel {
+    private final LabeledTextField identifierField;
+    private final LabeledTextField passwordField;
+    private final LabeledTextField authServiceField;
     private final JList<String> credentialsList;
     private final DefaultListModel<String> listModel;
 
@@ -18,7 +22,13 @@ public class ConsultationScreen extends JPanel {
 
         listModel = new DefaultListModel<>();
         credentialsList = new JList<>(listModel);
+
         loadCredentials(credentialController);
+        credentialsList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateFields(credentialController);
+            }
+        });
 
         JScrollPane credentialsListPane = new JScrollPane(credentialsList);
         credentialsListPane.setMinimumSize(credentialsListPane.getPreferredSize());
@@ -30,9 +40,9 @@ public class ConsultationScreen extends JPanel {
         JPanel credentialsDetailsPanel = new JPanel();
         credentialsDetailsPanel.setLayout(new BoxLayout(credentialsDetailsPanel, BoxLayout.Y_AXIS));
 
-        LabeledTextField identifierField = new LabeledTextField("Identifier",20, false);
-        LabeledTextField passwordField = new LabeledTextField("Password",20, false);
-        LabeledTextField authServiceField = new LabeledTextField("Auth service",20, false);
+        this.identifierField = new LabeledTextField("Identifier",20, false);
+        this.passwordField = new LabeledTextField("Password",20, false);
+        this.authServiceField = new LabeledTextField("Auth service",20, false);
 
         credentialsDetailsPanel.add(Box.createVerticalGlue());
         credentialsDetailsPanel.add(identifierField);
@@ -51,8 +61,6 @@ public class ConsultationScreen extends JPanel {
         });
 
         editButton.addActionListener(e -> {
-            // Load selected credential for editing
-            // For simplicity, we assume only one item for now
             if (!credentialsList.isSelectionEmpty()) {
                 mainFrame.switchPanel(new EditScreen(mainFrame, credentialController));
             }
@@ -77,6 +85,20 @@ public class ConsultationScreen extends JPanel {
         listModel.clear();
         for (Credential credential : credentialController.getCredentials()) {
             listModel.addElement(credential.getName());
+        }
+    }
+
+    private void updateFields(CredentialController credentialController) {
+        String selectedCredentialName = credentialsList.getSelectedValue();
+        if (selectedCredentialName != null) {
+            Optional<Credential> selectedCredential = credentialController.getCredentials().stream()
+                    .filter(cred -> cred.getName().equals(selectedCredentialName))
+                    .findFirst();
+            selectedCredential.ifPresent(credential -> {
+                identifierField.setTextFieldText(credential.getIdentifier());
+                passwordField.setTextFieldText(credential.getPassword());
+                authServiceField.setTextFieldText(credential.getAuthService());
+            });
         }
     }
 }
