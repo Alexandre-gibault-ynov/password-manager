@@ -68,7 +68,12 @@ public class ConsultationScreen extends JPanel {
 
         deleteButton.addActionListener(e -> {
             if (!credentialsList.isSelectionEmpty()) {
-                listModel.removeElement(credentialsList.getSelectedIndex());
+                int reply = JOptionPane.showConfirmDialog(mainFrame, "Are you sure to delete this credential?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+                if (reply == JOptionPane.OK_OPTION) {
+                    int selectedIndex = credentialsList.getSelectedIndex();
+                    credentialController.removeCredential(selectedIndex);
+                    listModel.remove(selectedIndex);
+                }
             }
         });
 
